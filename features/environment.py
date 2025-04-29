@@ -9,7 +9,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from app.application import Application
 
-def browser_init(context):
+def browser_init(context, scenario_name):
     """
     :param context: Behave context
     """
@@ -27,10 +27,42 @@ def browser_init(context):
     #service = Service(ChromeDriverManager().install())
     #context.driver = webdriver.Chrome(options=options, service=service)
 
-    firefox_options = FirefoxOptions()
-    firefox_options.add_argument('--headless')
-    service = FirefoxService(GeckoDriverManager().install())
-    context.driver = webdriver.Firefox(options=firefox_options, service=service)
+    #firefox_options = FirefoxOptions()
+    #firefox_options.add_argument('--headless')
+    #service = FirefoxService(GeckoDriverManager().install())
+    #context.driver = webdriver.Firefox(options=firefox_options, service=service)
+
+    ### BROWSERSTACK ###
+    bs_user = ''
+    bs_key = ''
+    url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+
+    #options = Options()
+    #bstack_options = {
+    #    'os': "OS X",
+    #    'osVersion': "Monterey",
+    #    'browserName': 'Chrome',
+    #    'sessionName': scenario_name,
+    #}
+
+    #options = Options()
+    #bstack_options = {
+    #    'os': "Windows",
+    #    'osVersion': "11",
+    #    'browserName': 'edge',
+    #    'sessionName': scenario_name,
+    #}
+
+    options = FirefoxOptions()
+    bstack_options = {
+        'os': "OS X",
+        'osVersion': "Ventura",
+        'browserName': 'Firefox',
+        'sessionName': scenario_name,
+    }
+
+    options.set_capability('bstack:options', bstack_options)
+    context.driver = webdriver.Remote(command_executor=url, options=options)
 
     context.driver.maximize_window()
     context.driver.implicitly_wait(4)
@@ -40,7 +72,7 @@ def browser_init(context):
 
 def before_scenario(context, scenario):
     print('\nStarted scenario: ', scenario.name)
-    browser_init(context)
+    browser_init(context, scenario.name)
 
 
 def before_step(context, step):
