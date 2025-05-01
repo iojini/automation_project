@@ -8,8 +8,8 @@ def navigate_to_main(context):
 
 @given("user logs in with email and password")
 def login_with_credentials(context):
-    email = "***"
-    password = "***"
+    email = "irene.ojini@gmail.com"
+    password = "HiReelly123!"
     context.app.login_page.login(email, password)
 
 

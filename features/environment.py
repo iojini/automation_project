@@ -9,13 +9,16 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from app.application import Application
 
+# Command to run tests with Allure & Behave:
+# behave -f allure_behave.formatter:AllureFormatter -o test_results/ features/tests/language_change.feature
+
 def browser_init(context, scenario_name):
     """
     :param context: Behave context
     """
-    #driver_path = ChromeDriverManager().install()
-    #service = Service(driver_path)
-    #context.driver = webdriver.Chrome(service=service)
+    driver_path = ChromeDriverManager().install()
+    service = Service(driver_path)
+    context.driver = webdriver.Chrome(service=service)
 
     # driver_path = GeckoDriverManager().install()
     # service = Service(driver_path)
@@ -33,9 +36,9 @@ def browser_init(context, scenario_name):
     #context.driver = webdriver.Firefox(options=firefox_options, service=service)
 
     ### BROWSERSTACK ###
-    bs_user = ''
-    bs_key = ''
-    url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+    #bs_user = ''
+    #bs_key = ''
+    #url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
 
     #options = Options()
     #bstack_options = {
@@ -53,16 +56,16 @@ def browser_init(context, scenario_name):
     #    'sessionName': scenario_name,
     #}
 
-    options = FirefoxOptions()
-    bstack_options = {
-        'os': "OS X",
-        'osVersion': "Ventura",
-        'browserName': 'Firefox',
-        'sessionName': scenario_name,
-    }
+    #options = FirefoxOptions()
+    #bstack_options = {
+    #    'os': "OS X",
+    #    'osVersion': "Ventura",
+    #    'browserName': 'Firefox',
+    #    'sessionName': scenario_name,
+    #}
 
-    options.set_capability('bstack:options', bstack_options)
-    context.driver = webdriver.Remote(command_executor=url, options=options)
+    #options.set_capability('bstack:options', bstack_options)
+    #context.driver = webdriver.Remote(command_executor=url, options=options)
 
     context.driver.maximize_window()
     context.driver.implicitly_wait(4)
