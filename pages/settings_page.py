@@ -10,8 +10,9 @@ class SettingsPage(Page):
 
     def open_language_menu(self):
         self.wait_until_visible(*self.LANGUAGE_BUTTON)
-        #lang_button = self.find_element(*self.LANGUAGE_BUTTON)
+        lang_button = self.find_element(*self.LANGUAGE_BUTTON)
         ActionChains(self.driver).move_to_element(self.find_element(*self.LANGUAGE_BUTTON)).perform()
+        self.driver.execute_script("arguments[0].click();", lang_button)
         self.wait_until_visible(*self.RUSSIAN_OPTION)
 
     def select_russian_language(self):
